@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +10,18 @@
     <!-- Google Fonts for VT323 and Fira Code -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <style>
         /* Define CSS Variables for consistent theming */
         :root {
             --bg-color: #111217;
             /* FINALIZED TEXT HIERARCHY */
-            --text-bright: #F9FAFB; /* Made even brighter off-white */
+            --text-bright: #F9FAFB;
+            /* Made even brighter off-white */
             --text-medium: #D1D5DB;
-            --text-dim: #BDC3C7; /* Brighter gray for better visibility */
+            --text-dim: #BDC3C7;
+            /* Brighter gray for better visibility */
             --card-bg: rgba(28, 29, 35, 0.75);
             --border-color: rgba(120, 113, 108, 0.2);
         }
@@ -26,37 +30,56 @@
         body {
             font-family: 'Fira Code', monospace;
             background-color: var(--bg-color);
-            color: var(--text-dim); /* General text color for dim elements */
+            color: var(--text-dim);
+            /* General text color for dim elements */
             overflow-x: hidden;
         }
 
         /* Headings use VT323 */
-        h1, h2, h3 {
+        h1,
+        h2,
+        h3 {
             font-family: 'VT323', monospace;
         }
 
         /* Specific text color overrides for clarity */
         .text-text-bright {
-            color: var(--text-bright); /* Ensures these are the brightest off-white */
+            color: var(--text-bright);
+            /* Ensures these are the brightest off-white */
         }
+
         .text-text-medium {
             color: var(--text-medium);
         }
+
         .text-text-dim {
             color: var(--text-dim);
         }
 
         /* Canvas backgrounds for animations */
         #background-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: -1;
         }
+
         .header-container {
-            position: relative; text-align: center;
+            position: relative;
+            text-align: center;
             padding-top: 40px;
             padding-bottom: 40px;
         }
+
         #header-canvas {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.7;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.7;
         }
 
         /* Animated Gradient Text */
@@ -65,27 +88,61 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
             /* background-image will be set by JavaScript */
         }
 
         /* Gradient Buttons */
         .gradient-bg {
-            color: var(--bg-color); /* Text color inside gradient buttons */
-            border: 2px solid transparent; /* Base border for gradient buttons */
+            color: var(--bg-color);
+            /* Text color inside gradient buttons */
+            border: 2px solid transparent;
+            /* Base border for gradient buttons */
             background-size: 200% 200%;
             transition: all 0.2s ease-in-out;
         }
+
         .gradient-bg:hover {
             transform: translateY(-3px) scale(1.03);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
         }
 
         /* Specific button gradients - set by JS */
-        .btn-primary-gradient { /* background-image set by JS */ }
-        .btn-primary-gradient:hover { /* background-image set by JS */ }
-        .btn-secondary-gradient { /* background-image set by JS */ }
-        .btn-secondary-gradient:hover { /* background-image set by JS */ }
+        .btn-primary-gradient {
+            /* background-image set by JS */
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .btn-primary-gradient:hover {
+            /* background-image set by JS */
+            background-position: right center;
+        }
+
+        .btn-secondary-gradient {
+            /* background-image set by JS */
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .btn-secondary-gradient:hover {
+            /* background-image set by JS */
+            background-position: right center;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
 
         /* Pixel Card Styling */
         .pixel-card {
@@ -97,51 +154,87 @@
             transition: all 0.3s ease;
             border-image: none;
         }
+
         .pixel-card:hover {
             transform: translateY(-4px);
             border: 1px solid transparent;
             border-image-slice: 1;
             /* border-image-source will be set by JavaScript */
         }
-        
+
         /* Blade Divider Styling */
         .blade-divider {
-            position: relative; width: 100%; max-width: 24rem; margin: 0.5rem auto; height: 24px;
+            position: relative;
+            width: 100%;
+            max-width: 24rem;
+            margin: 0.5rem auto;
+            height: 24px;
         }
-        .blade-divider > .line-container {
-            position: absolute; inset: 0; display: flex; align-items: center;
+
+        .blade-divider>.line-container {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
         }
+
         .blade-divider .line {
-            width: 100%; height: 2px; background-size: 400% 400%;
+            width: 100%;
+            height: 2px;
+            background-size: 400% 400%;
             /* background-image will be set by JavaScript */
         }
-        .blade-divider > .icon-container {
-            position: relative; display: flex; justify-content: center; height: 100%; align-items: center;
+
+        .blade-divider>.icon-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            height: 100%;
+            align-items: center;
         }
+
         .blade-divider .icon-bg {
             padding: 0 0.5rem;
             background-color: var(--bg-color);
         }
-        
+
         /* FAQ Accordion Styling */
         .faq-item button {
-            display: flex; width: 100%; justify-content: space-between; align-items: center; text-align: left;
-            background-color: rgba(255,255,255,0.05); padding: 1rem 1.5rem; border-radius: 0.25rem;
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 0.25rem;
             transition: background-color 0.2s;
         }
-        .faq-item button:hover { background-color: rgba(255,255,255,0.1); }
-        .faq-item .faq-answer { 
-            max-height: 0; 
-            overflow: hidden; 
-            transition: max-height 0.3s ease-out, padding 0.3s ease-out; 
-            padding: 0 1.5rem; 
+
+        .faq-item button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
-        .faq-item.active .faq-answer { 
-            max-height: 150rem; /* Sufficient height for content */ 
-            padding: 1.5rem; 
+
+        .faq-item .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            padding: 0 1.5rem;
         }
-        .faq-icon { transition: transform 0.3s ease; }
-        .faq-item.active .faq-icon { transform: rotate(180deg); }
+
+        .faq-item.active .faq-answer {
+            max-height: 150rem;
+            /* Sufficient height for content */
+            padding: 1.5rem;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
 
         /* Spinner styles */
         .spinner {
@@ -152,12 +245,19 @@
             height: 24px;
             animation: spin 1s linear infinite;
         }
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
+
 <body class="antialiased">
     <canvas id="background-canvas"></canvas>
 
@@ -176,87 +276,101 @@
         </header>
 
         <main class="mt-12">
-            
+
             <!-- Initiate Compression Section -->
             <section class="text-center">
                 <h2 class="gradient-text text-5xl font-bold tracking-wider">Initiate Compression</h2>
                 <div class="blade-divider">
-                    <div class="line-container"><div class="line"></div></div>
+                    <div class="line-container">
+                        <div class="line"></div>
+                    </div>
                     <div class="icon-container"><span class="icon-bg" id="shrink-icon-1"></span></div>
                 </div>
                 <div class="mt-8 max-w-xl mx-auto pixel-card p-6">
                     <h3 class="text-2xl font-bold text-text-medium">Upload Your Image</h3>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        id="image-upload-input"
-                        class="block w-full text-sm mt-6 mb-4
+                    <input type="file" accept="image/*" id="image-upload-input" class="block w-full text-sm mt-6 mb-4
                                 file:mr-4 file:py-2 file:px-4
                                 file:rounded-full file:border-0
                                 file:text-sm file:font-semibold
                                 file:bg-gradient-to-r file:from-rose-500 file:to-red-500 file:text-white
                                 hover:file:from-rose-600 hover:file:to-red-600
                                 cursor-pointer
-                                shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
-                    />
+                                shadow-md hover:shadow-lg transition-all duration-300 ease-in-out" />
                     <p id="message-display" class="mt-4 text-sm font-medium text-text-bright"></p>
-                    
-                    <div id="image-preview-area" class="hidden mt-6 p-4 bg-gray-900 rounded-lg flex flex-col items-center border border-gray-700 shadow-md">
+
+                    <div id="image-preview-area"
+                        class="hidden mt-6 p-4 bg-gray-900 rounded-lg flex flex-col items-center border border-gray-700 shadow-md">
                         <h3 class="text-xl font-semibold text-text-medium mb-3">Image Preview</h3>
-                        <img id="preview-image-display" src="#" alt="Selected Preview" class="max-w-full h-auto rounded-lg shadow-md mb-4 max-h-96 object-contain border border-gray-600" />
-                        <p id="original-size-display" class="text-gray-400 text-sm text-text-dim">Original size: <span class="font-bold text-text-bright"></span></p>
+                        <img id="preview-image-display" src="#" alt="Selected Preview"
+                            class="max-w-full h-auto rounded-lg shadow-md mb-4 max-h-96 object-contain border border-gray-600" />
+                        <p id="original-size-display" class="text-gray-400 text-sm text-text-dim">Original size: <span
+                                class="font-bold text-text-bright"></span></p>
                         <p id="compressed-size-display" class="text-lg font-bold text-text-medium mt-2"></p>
                         <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mt-6">
-                            <button
-                                id="compress-button"
+                            <button id="compress-button"
                                 class="px-6 py-3 text-white rounded-full font-bold shadow-lg transition duration-300 ease-in-out flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed gradient-bg btn-primary-gradient"
-                                disabled
-                            >
+                                disabled>
                                 <div id="spinner" class="spinner mr-2 hidden"></div>
-                                <svg id="shrink-icon-button" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <svg id="shrink-icon-button" class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
                                 <span id="compress-button-text">Shrink Image!</span>
                             </button>
-                            <button
-                                id="download-button"
-                                class="hidden px-6 py-3 text-white rounded-full font-bold shadow-lg transition duration-300 ease-in-out flex items-center justify-center gradient-bg btn-secondary-gradient"
-                            >
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            <button id="download-button"
+                                class="hidden px-6 py-3 text-white rounded-full font-bold shadow-lg transition duration-300 ease-in-out flex items-center justify-center gradient-bg btn-secondary-gradient">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
                                 Download "Compressed"
                             </button>
-                            <button
-                                id="reset-button"
-                                class="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-600 text-white rounded-full font-bold shadow-lg hover:from-gray-800 hover:to-gray-700 transition duration-300 ease-in-out"
-                            >
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            <button id="reset-button"
+                                class="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-600 text-white rounded-full font-bold shadow-lg hover:from-gray-800 hover:to-gray-700 transition duration-300 ease-in-out">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
                                 Reset
                             </button>
                         </div>
                     </div>
                 </div>
             </section>
-            
+
             <section class="mt-24 text-center">
                 <h2 class="gradient-text text-5xl font-bold tracking-wider">System Capabilities Briefing</h2>
                 <div class="blade-divider">
-                    <div class="line-container"><div class="line"></div></div>
+                    <div class="line-container">
+                        <div class="line"></div>
+                    </div>
                     <div class="icon-container"><span class="icon-bg" id="shrink-icon-2"></span></div>
                 </div>
-                <div class="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4"> <!-- Changed to 2x2 for better flow with 4 items -->
+                <div class="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
+                    <!-- Changed to 2x2 for better flow with 4 items -->
                     <div class="pixel-card p-6">
                         <h3 class="text-3xl font-medium" style="color: #22D3EE;">Intuitive Web Interface</h3>
-                        <p class="mt-3 text-base text-text-bright">A responsive and dark-themed web UI for easy image selection and conceptual compression previews.</p>
+                        <p class="mt-3 text-base text-text-bright">A responsive and dark-themed web UI for easy image
+                            selection and conceptual compression previews.</p>
                     </div>
                     <div class="pixel-card p-6">
                         <h3 class="text-3xl font-medium" style="color: #22D3EE;">Smart Compression Logic</h3>
-                        <p class="mt-3 text-base text-text-bright">The core Python script intelligently adjusts JPEG quality to meet a 1MB target size or a minimum quality threshold.</p>
+                        <p class="mt-3 text-base text-text-bright">The core Python script intelligently adjusts JPEG
+                            quality to meet a 1MB target size or a minimum quality threshold.</p>
                     </div>
                     <div class="pixel-card p-6">
                         <h3 class="text-3xl font-medium" style="color: #22D3EE;">Backend Ready</h3>
-                        <p class="mt-3 text-base text-text-bright">Designed for seamless integration with a Python backend to perform actual server-side image processing.</p>
+                        <p class="mt-3 text-base text-text-bright">Designed for seamless integration with a Python
+                            backend to perform actual server-side image processing.</p>
                     </div>
-                     <div class="pixel-card p-6"> <!-- New box for OCD -->
+                    <div class="pixel-card p-6"> <!-- New box for OCD -->
                         <h3 class="text-3xl font-medium" style="color: #22D3EE;">Cross-Platform Ready</h3>
-                        <p class="mt-3 text-base text-text-bright">The core Python script is designed for broad compatibility, allowing you to compress images efficiently across various operating systems.</p>
+                        <p class="mt-3 text-base text-text-bright">The core Python script is designed for broad
+                            compatibility, allowing you to compress images efficiently across various operating systems.
+                        </p>
                     </div>
                 </div>
             </section>
@@ -264,33 +378,58 @@
             <section class="mt-24 text-center">
                 <h2 class="gradient-text text-5xl font-bold tracking-wider">Operational Protocol</h2>
                 <div class="blade-divider">
-                    <div class="line-container"><div class="line"></div></div>
+                    <div class="line-container">
+                        <div class="line"></div>
+                    </div>
                     <div class="icon-container"><span class="icon-bg" id="shrink-icon-3"></span></div>
                 </div>
                 <div class="mt-8 max-w-4xl mx-auto space-y-4">
                     <div class="faq-item pixel-card p-2">
                         <button class="faq-question">
-                            <span class="text-2xl font-medium text-text-medium">Why is compression conceptual in this web app?</span>
-                            <svg class="faq-icon h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                            <span class="text-2xl font-medium text-text-medium">Why is compression conceptual in this
+                                web app?</span>
+                            <svg class="faq-icon h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                            </svg>
                         </button>
-                        <div class="faq-answer"><p class="text-text-bright">The core Python script utilizes file system operations and image processing libraries that run on a server. This web application provides a user-friendly interface to demonstrate the *concept* of the Shrink Ray. In a full deployment, the image would be sent to a backend server for actual compression and then returned.</p></div>
+                        <div class="faq-answer">
+                            <p class="text-text-bright">The core Python script utilizes file system operations and image
+                                processing libraries that run on a server. This web application provides a user-friendly
+                                interface to demonstrate the *concept* of the Shrink Ray. In a full deployment, the
+                                image would be sent to a backend server for actual compression and then returned.</p>
+                        </div>
                     </div>
                     <div class="faq-item pixel-card p-2">
                         <button class="faq-question">
-                            <span class="text-2xl font-medium text-text-medium">How do I use the Python script directly?</span>
-                            <svg class="faq-icon h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                            <span class="text-2xl font-medium text-text-medium">How do I use the Python script
+                                directly?</span>
+                            <svg class="faq-icon h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                            </svg>
                         </button>
                         <div class="faq-answer">
-                            <p class="text-text-bright">To use the full power of The Shrink Ray, you'll run the Python script directly on your computer.</p>
+                            <p class="text-text-bright">To use the full power of The Shrink Ray, you'll run the Python
+                                script directly on your computer.</p>
                             <h3 class="text-xl font-semibold mt-4 mb-2 text-text-medium">Prerequisites</h3>
-                            <p class="mb-2 text-text-bright">Make sure you have Python installed (Python 3.6+ recommended).</p>
-                            <p class="mb-4 text-text-bright">You'll also need the <code class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">Pillow</code> library. Install it using pip:</p>
-                            <pre class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm mb-4 border border-gray-700 shadow-md text-[#FFB74D]"><code>pip install Pillow</code></pre>
+                            <p class="mb-2 text-text-bright">Make sure you have Python installed (Python 3.6+
+                                recommended).</p>
+                            <p class="mb-4 text-text-bright">You'll also need the <code
+                                    class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">Pillow</code> library.
+                                Install it using pip:</p>
+                            <pre
+                                class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm mb-4 border border-gray-700 shadow-md text-[#FFB74D]"><code>pip install Pillow</code></pre>
                             <h3 class="text-xl font-semibold mb-3 text-text-medium">Running the Script</h3>
                             <ol class="list-decimal list-inside text-lg space-y-3 text-text-bright">
-                                <li><strong class="text-text-medium">Save the Script:</strong> Save the provided Python code as <code class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">shrink_ray.py</code> in your project directory.</li>
+                                <li><strong class="text-text-medium">Save the Script:</strong> Save the provided Python
+                                    code as <code
+                                        class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">shrink_ray.py</code> in
+                                    your project directory.</li>
                                 <details class="mt-2 bg-gray-900 p-4 rounded-lg border border-gray-700 shadow-md">
-                                    <summary class="cursor-pointer font-bold hover:text-white transition-colors duration-200 text-text-medium">Click to view `shrink_ray.py` code</summary>
+                                    <summary
+                                        class="cursor-pointer font-bold hover:text-white transition-colors duration-200 text-text-medium">
+                                        Click to view `shrink_ray.py` code</summary>
                                     <pre class="overflow-x-auto text-sm text-gray-300 mt-2"><code>from PIL import Image
 import io
 import os
@@ -320,13 +459,30 @@ def compress_image_to_1mb(input_filename, output_filename):
 if __name__ == '__main__':
     compress_image_to_1mb('input-image.png', 'output-image.jpg');</code></pre>
                                 </details>
-                                <li><strong class="text-text-medium">Place Your Image:</strong> Put the image you want to compress (e.g., <code class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">my-large-photo.png</code>) in the same directory as <code class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">shrink_ray.py</code>.</li>
-                                <li><strong class="text-text-medium">Modify the Script (Optional but Recommended):</strong> Open <code class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">shrink_ray.py</code> and change the <code class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">input-image.png</code> and <code class="bg-gray-900 px-1 py-0.5 rounded" style="color: #FFB74D;">output-image.jpg</code> values in the <code class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">if __name__ == '__main__':</code> block to match your desired filenames.</li>
-                                <pre class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm mb-4 border border-gray-700 shadow-md text-[#FFB74D]"><code>if __name__ == '__main__':
+                                <li><strong class="text-text-medium">Place Your Image:</strong> Put the image you want
+                                    to compress (e.g., <code
+                                        class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">my-large-photo.png</code>)
+                                    in the same directory as <code
+                                        class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">shrink_ray.py</code>.
+                                </li>
+                                <li><strong class="text-text-medium">Modify the Script (Optional but
+                                        Recommended):</strong> Open <code
+                                        class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">shrink_ray.py</code> and
+                                    change the <code
+                                        class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">input-image.png</code>
+                                    and <code class="bg-gray-900 px-1 py-0.5 rounded"
+                                        style="color: #FFB74D;">output-image.jpg</code> values in the <code
+                                        class="bg-gray-900 px-1 py-0.5 rounded text-[#FFB74D]">if __name__ == '__main__':</code>
+                                    block to match your desired filenames.</li>
+                                <pre
+                                    class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm mb-4 border border-gray-700 shadow-md text-[#FFB74D]"><code>if __name__ == '__main__':
     compress_image_to_1mb('my-large-photo.png', 'compressed-photo.jpg');</code></pre>
-                                <li><strong class="text-text-medium">Run from Terminal:</strong> Navigate to your script's directory in your terminal or command prompt and run:</li>
-                                <pre class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm border border-gray-700 shadow-md text-[#FFB74D]"><code>python shrink_ray.py</code></pre>
-                                <p class="mt-2 text-text-bright">The compressed image will be saved in the same directory!</p>
+                                <li><strong class="text-text-medium">Run from Terminal:</strong> Navigate to your
+                                    script's directory in your terminal or command prompt and run:</li>
+                                <pre
+                                    class="bg-gray-950 p-4 rounded-lg overflow-x-auto text-sm border border-gray-700 shadow-md text-[#FFB74D]"><code>python shrink_ray.py</code></pre>
+                                <p class="mt-2 text-text-bright">The compressed image will be saved in the same
+                                    directory!</p>
                             </ol>
                         </div>
                     </div>
@@ -336,7 +492,9 @@ if __name__ == '__main__':
             <section class="mt-24 text-center">
                 <h2 class="gradient-text text-5xl font-bold tracking-wider">Project Source</h2>
                 <div class="blade-divider">
-                    <div class="line-container"><div class="line"></div></div>
+                    <div class="line-container">
+                        <div class="line"></div>
+                    </div>
                     <div class="icon-container"><span class="icon-bg" id="shrink-icon-4"></span></div>
                 </div>
                 <div class="mt-8 pixel-card p-6 max-w-xl mx-auto">
@@ -344,13 +502,13 @@ if __name__ == '__main__':
                     <p class="text-lg mb-6 text-text-bright">
                         Explore the full source code for "The Shrink Ray" script and this web application on GitHub.
                     </p>
-                    <a
-                        href="https://github.com/Neohacks/imagetopfpscript"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="inline-block font-bold rounded-md px-12 py-4 text-xl gradient-bg btn-primary-gradient"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2 -mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                    <a href="https://github.com/Neohacks/imagetopfpscript" target="_blank" rel="noopener noreferrer"
+                        class="inline-block font-bold rounded-md px-12 py-4 text-xl gradient-bg btn-primary-gradient">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2 -mt-1" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
                         View on GitHub
                     </a>
                 </div>
@@ -362,9 +520,12 @@ if __name__ == '__main__':
         <div class="max-w-5xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
             <div class="mb-4">
                 <h3 class="text-xl text-text-medium">Credits</h3>
-                <p class="text-text-bright">This project was a collaborative effort between <a href="https://neohack.games/" class="gradient-text" target="_blank" rel="noopener noreferrer">Neohacks</a> and Google's Gemini.</p>
+                <p class="text-text-bright">This project was a collaborative effort between <a
+                        href="https://neohack.games/" class="gradient-text" target="_blank"
+                        rel="noopener noreferrer">Neohacks</a> and Google's Gemini.</p>
             </div>
-            <a href="https://github.com/Neohacks/imagetopfpscript" target="_blank" rel="noopener noreferrer" class="gradient-text">View Source on GitHub</a>
+            <a href="https://github.com/Neohacks/imagetopfpscript" target="_blank" rel="noopener noreferrer"
+                class="gradient-text">View Source on GitHub</a>
         </div>
     </footer>
 
@@ -404,18 +565,18 @@ if __name__ == '__main__':
 
             class Star {
                 constructor() { this.reset(); }
-                reset() { 
-                    this.x = Math.random() * backgroundCanvas.width; 
-                    this.y = Math.random() * backgroundCanvas.height; 
-                    this.radius = Math.random() * 1.5 + 0.5; 
-                    this.alpha = Math.random() * 0.5 + 0.5; 
-                    this.twinkleSpeed = Math.random() * 0.02; 
-                    this.speed = this.radius * 0.2; 
+                reset() {
+                    this.x = Math.random() * backgroundCanvas.width;
+                    this.y = Math.random() * backgroundCanvas.height;
+                    this.radius = Math.random() * 1.5 + 0.5;
+                    this.alpha = Math.random() * 0.5 + 0.5;
+                    this.twinkleSpeed = Math.random() * 0.02;
+                    this.speed = this.radius * 0.2;
                     this.pulseOffset = Math.random() * Math.PI * 2;
                 }
-                update() { 
-                    this.x -= this.speed; 
-                    if(this.x < 0) this.x = backgroundCanvas.width; 
+                update() {
+                    this.x -= this.speed;
+                    if (this.x < 0) this.x = backgroundCanvas.width;
                     this.alpha = 0.5 + 0.5 * Math.sin(this.twinkleSpeed * Date.now() * 0.001 + this.pulseOffset);
                 }
                 draw() {
@@ -429,7 +590,7 @@ if __name__ == '__main__':
             const generateTerrain = () => {
                 terrain = []; let currentHeight = 70;
                 for (let x = 0; x < backgroundCanvas.width + terrainStep; x += terrainStep) {
-                    terrain.push({x: x, h: currentHeight});
+                    terrain.push({ x: x, h: currentHeight });
                     currentHeight += (Math.random() - 0.48) * 10;
                     if (currentHeight < 40) currentHeight = 40; if (currentHeight > 120) currentHeight = 120;
                 }
@@ -456,18 +617,14 @@ if __name__ == '__main__':
                 backgroundCanvas.width = window.innerWidth;
                 backgroundCanvas.height = document.body.scrollHeight;
                 stars = [];
-                for(let i = 0; i < 600; i++) stars.push(new Star());
+                for (let i = 0; i < 600; i++) stars.push(new Star());
                 generateTerrain();
             };
 
             // Initial setup and loop for background
             resizeBackground();
-            let bgAnimationFrameId;
-            const loopBackground = () => {
-                animateStars();
-                bgAnimationFrameId = requestAnimationFrame(loopBackground);
-            };
-            loopBackground();
+
+            // Remove the separate background animation loop since it's now integrated in masterAnimate
 
             // --- Canvas Header Animation Logic (Slashes & Particles) ---
             const headerCtx = headerCanvas.getContext('2d');
@@ -475,9 +632,9 @@ if __name__ == '__main__':
             let slashes = [];
 
             class Particle {
-                constructor(x, y, color) { this.x=x; this.y=y; this.color=color; this.life=30+Math.random()*20; this.vx=(Math.random()-0.5)*3; this.vy=(Math.random()-0.5)*3; this.size=Math.random()*2+1; }
-                update() { this.x+=this.vx; this.y+=this.vy; this.life--; }
-                draw() { headerCtx.fillStyle=this.color; headerCtx.globalAlpha=this.life/50; headerCtx.fillRect(this.x,this.y,this.size,this.size); headerCtx.globalAlpha=1; }
+                constructor(x, y, color) { this.x = x; this.y = y; this.color = color; this.life = 30 + Math.random() * 20; this.vx = (Math.random() - 0.5) * 3; this.vy = (Math.random() - 0.5) * 3; this.size = Math.random() * 2 + 1; }
+                update() { this.x += this.vx; this.y += this.vy; this.life--; }
+                draw() { headerCtx.fillStyle = this.color; headerCtx.globalAlpha = this.life / 50; headerCtx.fillRect(this.x, this.y, this.size, this.size); headerCtx.globalAlpha = 1; }
             }
 
             class Slash {
@@ -485,11 +642,11 @@ if __name__ == '__main__':
                     this.life = 60;
                     this.color = APP_GRADIENT_COLORS[Math.floor(Math.random() * APP_GRADIENT_COLORS.length)];
                     const e = Math.floor(Math.random() * 4), w = headerCanvas.width, h = headerCanvas.height;
-                    switch(e){ case 0:this.x1=Math.random()*w;this.y1=0;this.x2=Math.random()*w;this.y2=h;break; case 1:this.x1=w;this.y1=Math.random()*h;this.x2=0;this.y2=Math.random()*h;break; case 2:this.x1=Math.random()*w;this.y1=h;this.x2=Math.random()*w;this.y2=0;break; case 3:this.x1=0;this.y1=Math.random()*h;this.x2=w;this.y2=Math.random()*h;break; }
+                    switch (e) { case 0: this.x1 = Math.random() * w; this.y1 = 0; this.x2 = Math.random() * w; this.y2 = h; break; case 1: this.x1 = w; this.y1 = Math.random() * h; this.x2 = 0; this.y2 = Math.random() * h; break; case 2: this.x1 = Math.random() * w; this.y1 = h; this.x2 = Math.random() * w; this.y2 = 0; break; case 3: this.x1 = 0; this.y1 = Math.random() * h; this.x2 = w; this.y2 = Math.random() * h; break; }
                     this.progress = 0;
                 }
-                update() { this.life--; this.progress=1-(this.life/60); if(this.life>0){ const cX=this.x1+(this.x2-this.x1)*this.progress,cY=this.y1+(this.y2-this.y1)*this.progress; particles.push(new Particle(cX,cY,this.color)); } }
-                draw() { headerCtx.beginPath(); headerCtx.moveTo(this.x1,this.y1); headerCtx.lineTo(this.x1+(this.x2-this.x1)*this.progress,this.y1+(this.y2-this.y1)*this.progress); headerCtx.strokeStyle=this.color; headerCtx.lineWidth=3; headerCtx.globalAlpha=Math.sin(this.progress*Math.PI); headerCtx.shadowColor=this.color; headerCtx.shadowBlur=15; headerCtx.stroke(); headerCtx.shadowBlur=0; headerCtx.globalAlpha=1; }
+                update() { this.life--; this.progress = 1 - (this.life / 60); if (this.life > 0) { const cX = this.x1 + (this.x2 - this.x1) * this.progress, cY = this.y1 + (this.y2 - this.y1) * this.progress; particles.push(new Particle(cX, cY, this.color)); } }
+                draw() { headerCtx.beginPath(); headerCtx.moveTo(this.x1, this.y1); headerCtx.lineTo(this.x1 + (this.x2 - this.x1) * this.progress, this.y1 + (this.y2 - this.y1) * this.progress); headerCtx.strokeStyle = this.color; headerCtx.lineWidth = 3; headerCtx.globalAlpha = Math.sin(this.progress * Math.PI); headerCtx.shadowColor = this.color; headerCtx.shadowBlur = 15; headerCtx.stroke(); headerCtx.shadowBlur = 0; headerCtx.globalAlpha = 1; }
             }
 
             const animateSlashes = () => {
@@ -507,7 +664,7 @@ if __name__ == '__main__':
                 }
             };
             resizeHeader(); // Initial size setup
-            const slashInterval = setInterval(() => { if(slashes.length < 2) slashes.push(new Slash()); }, 1500);
+            const slashInterval = setInterval(() => { if (slashes.length < 2) slashes.push(new Slash()); }, 1500);
             let headerAnimationFrameId;
             const loopHeader = () => {
                 animateSlashes();
@@ -520,10 +677,10 @@ if __name__ == '__main__':
             const masterAnimate = () => {
                 gradientOffset = (gradientOffset + 0.2) % 360;
                 const loopedGradientCss = `linear-gradient(${gradientOffset}deg, ${[...APP_GRADIENT_COLORS, APP_GRADIENT_COLORS[0]].join(', ')})`;
-                
+
                 // Apply gradient to all .gradient-text elements
                 document.querySelectorAll('.gradient-text').forEach(el => el.style.backgroundImage = loopedGradientCss);
-                
+
                 // Apply gradient to blade divider lines
                 document.querySelectorAll('.blade-divider .line').forEach(el => el.style.backgroundImage = loopedGradientCss);
 
@@ -541,11 +698,18 @@ if __name__ == '__main__':
                 const btnPrimaryGradientCss = `linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), linear-gradient(to right, ${APP_GRADIENT_COLORS[0]}, ${APP_GRADIENT_COLORS[2]})`;
                 const btnSecondaryGradientCss = `linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), linear-gradient(to right, ${APP_GRADIENT_COLORS[1]}, ${APP_GRADIENT_COLORS[0]})`;
 
-                document.querySelectorAll('.btn-primary-gradient').forEach(el => el.style.backgroundImage = btnPrimaryGradientCss);
-                document.querySelectorAll('.btn-secondary-gradient').forEach(el => el.style.backgroundImage = btnSecondaryGradientCss);
+                document.querySelectorAll('.btn-primary-gradient').forEach(el => {
+                    el.style.backgroundImage = btnPrimaryGradientCss;
+                });
+                document.querySelectorAll('.btn-secondary-gradient').forEach(el => {
+                    el.style.backgroundImage = btnSecondaryGradientCss;
+                });
 
                 // Update spinner border color if needed (it's already in static CSS via APP_GRADIENT_COLORS[1])
                 document.querySelector('.spinner').style.borderTopColor = APP_GRADIENT_COLORS[1];
+
+                // Animate background
+                animateStars();
 
                 requestAnimationFrame(masterAnimate);
             };
@@ -692,4 +856,5 @@ if __name__ == '__main__':
         });
     </script>
 </body>
+
 </html>
