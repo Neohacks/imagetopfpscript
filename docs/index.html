@@ -4,13 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Shrink Ray</title>
+    <meta name="description" content="The Shrink Ray - Effortlessly compress your images down to 1MB or less with our futuristic image compression tool.">
+    <meta name="keywords" content="image compression, shrink images, reduce file size, web tool, image optimizer">
+    <meta name="author" content="Neohacks">
+    <title>The Shrink Ray - Image Compression Tool</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2322D3EE'><polyline points='15 3 21 3 21 9'/><path d='M21 3L14 10'/><polyline points='9 21 3 21 3 15'/><path d='M3 21L10 14'/></svg>">
     <!-- Tailwind CSS CDN for utility classes -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts for VT323 and Fira Code -->
+    <!-- Google Fonts for Orbitron and Space Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Fira+Code:wght@400;500;600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap"
         rel="stylesheet">
     <style>
         /* Define CSS Variables for consistent theming */
@@ -26,20 +30,48 @@
             --border-color: rgba(120, 113, 108, 0.2);
         }
 
-        /* Base body styles using Fira Code */
+        /* Base body styles using Space Mono */
         body {
-            font-family: 'Fira Code', monospace;
+            font-family: 'Space Mono', monospace;
             background-color: var(--bg-color);
             color: var(--text-dim);
             /* General text color for dim elements */
             overflow-x: hidden;
         }
 
-        /* Headings use VT323 */
+        /* Headings use Orbitron */
         h1,
         h2,
         h3 {
-            font-family: 'VT323', monospace;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        /* Enhanced sci-fi styling for main heading */
+        h1 {
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Button text styling */
+        button,
+        .btn,
+        input[type="file"]::file-selector-button {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        /* Performance optimizations */
+        * {
+            box-sizing: border-box;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
         }
 
         /* Specific text color overrides for clarity */
@@ -284,7 +316,6 @@
                     <div class="line-container">
                         <div class="line"></div>
                     </div>
-                    <div class="icon-container"><span class="icon-bg" id="shrink-icon-1"></span></div>
                 </div>
                 <div class="mt-8 max-w-xl mx-auto pixel-card p-6">
                     <h3 class="text-2xl font-bold text-text-medium">Upload Your Image</h3>
@@ -311,11 +342,6 @@
                                 class="px-6 py-3 text-white rounded-full font-bold shadow-lg transition duration-300 ease-in-out flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed gradient-bg btn-primary-gradient"
                                 disabled>
                                 <div id="spinner" class="spinner mr-2 hidden"></div>
-                                <svg id="shrink-icon-button" class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
                                 <span id="compress-button-text">Shrink Image!</span>
                             </button>
                             <button id="download-button"
@@ -347,7 +373,6 @@
                     <div class="line-container">
                         <div class="line"></div>
                     </div>
-                    <div class="icon-container"><span class="icon-bg" id="shrink-icon-2"></span></div>
                 </div>
                 <div class="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
                     <!-- Changed to 2x2 for better flow with 4 items -->
@@ -381,7 +406,6 @@
                     <div class="line-container">
                         <div class="line"></div>
                     </div>
-                    <div class="icon-container"><span class="icon-bg" id="shrink-icon-3"></span></div>
                 </div>
                 <div class="mt-8 max-w-4xl mx-auto space-y-4">
                     <div class="faq-item pixel-card p-2">
@@ -495,7 +519,6 @@ if __name__ == '__main__':
                     <div class="line-container">
                         <div class="line"></div>
                     </div>
-                    <div class="icon-container"><span class="icon-bg" id="shrink-icon-4"></span></div>
                 </div>
                 <div class="mt-8 pixel-card p-6 max-w-xl mx-auto">
                     <h3 class="text-2xl font-medium mb-4 text-text-medium">Repository Access</h3>
@@ -549,7 +572,6 @@ if __name__ == '__main__':
             const downloadButton = document.getElementById('download-button');
             const resetButton = document.getElementById('reset-button');
             const spinner = document.getElementById('spinner');
-            const shrinkIconButton = document.getElementById('shrink-icon-button');
             const compressButtonText = document.getElementById('compress-button-text');
 
             // --- State Variables ---
@@ -715,28 +737,6 @@ if __name__ == '__main__':
             };
             masterAnimate();
 
-            // --- Custom Icon Rendering ---
-            // Function to render the ShrinkIcon SVG into a specified element
-            const renderShrinkIcon = (elementId) => {
-                const targetElement = document.getElementById(elementId);
-                if (targetElement) {
-                    targetElement.innerHTML = `
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <path d="M21 3L14 10"></path>
-                            <polyline points="9 21 3 21 3 15"></polyline>
-                            <path d="M3 21L10 14"></path>
-                        </svg>
-                    `;
-                }
-            };
-
-            // Render ShrinkIcon in all designated places
-            renderShrinkIcon('shrink-icon-1');
-            renderShrinkIcon('shrink-icon-2');
-            renderShrinkIcon('shrink-icon-3');
-            renderShrinkIcon('shrink-icon-4'); // Make sure this ID exists in HTML
-
             // --- Image Compression Logic ---
             imageUploadInput.addEventListener('change', (event) => {
                 const file = event.target.files[0];
@@ -775,8 +775,7 @@ if __name__ == '__main__':
                 compressButton.disabled = true;
                 resetButton.disabled = true;
                 spinner.classList.remove('hidden');
-                shrinkIconButton.classList.add('hidden');
-                compressButtonText.textContent = 'Shrinking...';
+                compressButtonText.textContent = 'Processing...';
                 messageDisplay.textContent = 'Shrinking image... please wait.';
                 downloadButton.classList.add('hidden');
 
@@ -796,9 +795,8 @@ if __name__ == '__main__':
                     compressButton.disabled = false;
                     resetButton.disabled = false;
                     spinner.classList.add('hidden');
-                    shrinkIconButton.classList.remove('hidden');
                     compressButtonText.textContent = 'Shrink Image!';
-                    messageDisplay.textContent = `Image "compressed"! Original size: ${originalSizeKB.toFixed(2)} KB. New size: ${simulatedCompressedSizeKB} KB.`;
+                    messageDisplay.innerHTML = `<span class="text-emerald-400">✓</span> Image "compressed"! Original: ${originalSizeKB.toFixed(2)} KB → New: ${simulatedCompressedSizeKB} KB`;
                     downloadButton.classList.remove('hidden');
                 }, 2000);
             });
@@ -829,7 +827,6 @@ if __name__ == '__main__':
                 compressButton.disabled = true;
                 downloadButton.classList.add('hidden');
                 spinner.classList.add('hidden');
-                shrinkIconButton.classList.remove('hidden');
                 compressButtonText.textContent = 'Shrink Image!';
                 resetButton.disabled = false;
             });
