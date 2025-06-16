@@ -3,18 +3,21 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The Shrink Ray - Effortlessly compress your images down to 1MB or less with our futuristic image compression tool.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description"
+        content="The Shrink Ray - Effortlessly compress your images down to 1MB or less with our futuristic image compression tool.">
     <meta name="keywords" content="image compression, shrink images, reduce file size, web tool, image optimizer">
     <meta name="author" content="Neohacks">
     <title>The Shrink Ray - Image Compression Tool</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2322D3EE'><polyline points='15 3 21 3 21 9'/><path d='M21 3L14 10'/><polyline points='9 21 3 21 3 15'/><path d='M3 21L10 14'/></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2322D3EE'><polyline points='15 3 21 3 21 9'/><path d='M21 3L14 10'/><polyline points='9 21 3 21 3 15'/><path d='M3 21L10 14'/></svg>">
     <!-- Tailwind CSS CDN for utility classes -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts for Orbitron and Space Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap"
         rel="stylesheet">
     <style>
         /* Define CSS Variables for consistent theming */
@@ -55,6 +58,36 @@
             letter-spacing: 0.1em;
         }
 
+        /* Mobile responsive heading adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem !important;
+                /* Override Tailwind text-6xl on mobile */
+                line-height: 1.1;
+            }
+
+            h2 {
+                font-size: 2.5rem !important;
+                /* Override text-5xl on mobile */
+                line-height: 1.2;
+            }
+
+            h3 {
+                font-size: 1.5rem !important;
+                line-height: 1.3;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.5rem !important;
+            }
+
+            h2 {
+                font-size: 2rem !important;
+            }
+        }
+
         /* Button text styling */
         button,
         .btn,
@@ -72,6 +105,61 @@
         img {
             max-width: 100%;
             height: auto;
+        }
+
+        /* Mobile touch improvements */
+        @media (max-width: 768px) {
+
+            /* Improve touch targets */
+            button,
+            input[type="file"],
+            .faq-question {
+                min-height: 44px;
+                /* Apple's recommended minimum touch target */
+                padding: 12px 16px;
+            }
+
+            /* Better spacing on mobile */
+            .pixel-card {
+                margin: 0 8px;
+                padding: 1rem !important;
+            }
+
+            /* Prevent horizontal scroll */
+            .max-w-5xl,
+            .max-w-4xl,
+            .max-w-3xl,
+            .max-w-xl {
+                margin-left: 1rem;
+                margin-right: 1rem;
+                max-width: calc(100% - 2rem);
+            }
+
+            /* Stack buttons vertically on mobile */
+            .flex.flex-col.sm\\:flex-row {
+                flex-direction: column !important;
+                gap: 0.75rem;
+            }
+
+            /* Make grid single column on mobile */
+            .grid.gap-8.md\\:grid-cols-2.lg\\:grid-cols-2.xl\\:grid-cols-4 {
+                grid-template-columns: 1fr !important;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            /* Extra small screens */
+            .px-4 {
+                padding-left: 0.75rem !important;
+                padding-right: 0.75rem !important;
+            }
+
+            .py-16 {
+                padding-top: 2rem !important;
+                padding-bottom: 2rem !important;
+            }
         }
 
         /* Specific text color overrides for clarity */
@@ -194,6 +282,67 @@
             /* border-image-source will be set by JavaScript */
         }
 
+        /* Mobile optimizations for pixel cards */
+        @media (max-width: 768px) {
+            .pixel-card {
+                /* Simpler clip-path for mobile to reduce rendering issues */
+                clip-path: polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+            }
+
+            .pixel-card:hover {
+                transform: translateY(-2px);
+                /* Reduce hover effect on mobile */
+            }
+        }
+
+        /* Grid layout improvements for System Capabilities */
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .capabilities-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .capabilities-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+                max-width: 1000px;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .capabilities-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2rem;
+                max-width: 1400px;
+            }
+        }
+
+        /* Equal height cards */
+        .capability-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 180px;
+        }
+
+        .capability-card h3 {
+            flex-shrink: 0;
+            margin-bottom: 1rem;
+        }
+
+        .capability-card p {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+
         /* Blade Divider Styling */
         .blade-divider {
             position: relative;
@@ -245,6 +394,25 @@
 
         .faq-item button:hover {
             background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile FAQ improvements */
+        @media (max-width: 768px) {
+            .faq-item button {
+                padding: 1rem;
+                font-size: 1.125rem;
+                /* Reduce from text-2xl */
+            }
+
+            .faq-item .faq-answer {
+                padding: 0 1rem;
+                /* Reduce padding on mobile */
+            }
+
+            .faq-item.active .faq-answer {
+                padding: 1rem;
+                /* Consistent padding when active */
+            }
         }
 
         .faq-item .faq-answer {
@@ -318,34 +486,34 @@
                     </div>
                 </div>
                 <div class="mt-8 max-w-xl mx-auto pixel-card p-6">
-                    <h3 class="text-2xl font-bold text-text-medium">Upload Your Image</h3>
+                    <h3 class="text-2xl md:text-2xl text-center font-bold text-text-medium">Upload Your Image</h3>
                     <input type="file" accept="image/*" id="image-upload-input" class="block w-full text-sm mt-6 mb-4
-                                file:mr-4 file:py-2 file:px-4
+                                file:mr-2 md:file:mr-4 file:py-3 md:file:py-2 file:px-4
                                 file:rounded-full file:border-0
                                 file:text-sm file:font-semibold
                                 file:bg-gradient-to-r file:from-rose-500 file:to-red-500 file:text-white
                                 hover:file:from-rose-600 hover:file:to-red-600
-                                cursor-pointer
+                                cursor-pointer text-center
                                 shadow-md hover:shadow-lg transition-all duration-300 ease-in-out" />
-                    <p id="message-display" class="mt-4 text-sm font-medium text-text-bright"></p>
+                    <p id="message-display" class="mt-4 text-sm font-medium text-text-bright text-center"></p>
 
                     <div id="image-preview-area"
                         class="hidden mt-6 p-4 bg-gray-900 rounded-lg flex flex-col items-center border border-gray-700 shadow-md">
                         <h3 class="text-xl font-semibold text-text-medium mb-3">Image Preview</h3>
                         <img id="preview-image-display" src="#" alt="Selected Preview"
                             class="max-w-full h-auto rounded-lg shadow-md mb-4 max-h-96 object-contain border border-gray-600" />
-                        <p id="original-size-display" class="text-gray-400 text-sm text-text-dim">Original size: <span
-                                class="font-bold text-text-bright"></span></p>
-                        <p id="compressed-size-display" class="text-lg font-bold text-text-medium mt-2"></p>
-                        <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mt-6">
+                        <p id="original-size-display" class="text-gray-400 text-sm text-text-dim text-center">Original
+                            size: <span class="font-bold text-text-bright"></span></p>
+                        <p id="compressed-size-display" class="text-lg font-bold text-text-medium mt-2 text-center"></p>
+                        <div class="flex flex-col space-y-3 mt-6">
                             <button id="compress-button"
-                                class="px-6 py-3 text-white rounded-full font-bold shadow-lg transition duration-300 ease-in-out flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed gradient-bg btn-primary-gradient"
+                                class="w-full px-6 py-4 text-white rounded-full font-bold shadow-lg transition duration-300 ease-in-out flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed gradient-bg btn-primary-gradient"
                                 disabled>
                                 <div id="spinner" class="spinner mr-2 hidden"></div>
                                 <span id="compress-button-text">Shrink Image!</span>
                             </button>
                             <button id="download-button"
-                                class="hidden px-6 py-3 text-white rounded-full font-bold shadow-lg transition duration-300 ease-in-out flex items-center justify-center gradient-bg btn-secondary-gradient">
+                                class="hidden w-full px-6 py-4 text-white rounded-full font-bold shadow-lg transition duration-300 ease-in-out flex items-center justify-center gradient-bg btn-secondary-gradient">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -354,7 +522,7 @@
                                 Download "Compressed"
                             </button>
                             <button id="reset-button"
-                                class="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-600 text-white rounded-full font-bold shadow-lg hover:from-gray-800 hover:to-gray-700 transition duration-300 ease-in-out">
+                                class="w-full px-6 py-4 bg-gradient-to-r from-gray-700 to-gray-600 text-white rounded-full font-bold shadow-lg hover:from-gray-800 hover:to-gray-700 transition duration-300 ease-in-out flex items-center justify-center">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -374,27 +542,50 @@
                         <div class="line"></div>
                     </div>
                 </div>
-                <div class="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
-                    <!-- Changed to 2x2 for better flow with 4 items -->
-                    <div class="pixel-card p-6">
-                        <h3 class="text-3xl font-medium" style="color: #22D3EE;">Intuitive Web Interface</h3>
-                        <p class="mt-3 text-base text-text-bright">A responsive and dark-themed web UI for easy image
-                            selection and conceptual compression previews.</p>
+                <div class="mt-12 capabilities-grid mx-auto px-4">
+                    <!-- Reordered for logical flow: Interface → Logic → Backend → Platform -->
+
+                    <!-- 1. Intuitive Web Interface -->
+                    <div class="pixel-card capability-card p-6">
+                        <h3 class="text-xl lg:text-2xl font-medium text-center" style="color: #22D3EE;">
+                            🖥️ Intuitive Web Interface
+                        </h3>
+                        <p class="text-sm lg:text-base text-text-bright text-center">
+                            A responsive and dark-themed web UI for easy image selection and conceptual compression
+                            previews.
+                        </p>
                     </div>
-                    <div class="pixel-card p-6">
-                        <h3 class="text-3xl font-medium" style="color: #22D3EE;">Smart Compression Logic</h3>
-                        <p class="mt-3 text-base text-text-bright">The core Python script intelligently adjusts JPEG
-                            quality to meet a 1MB target size or a minimum quality threshold.</p>
+
+                    <!-- 2. Smart Compression Logic -->
+                    <div class="pixel-card capability-card p-6">
+                        <h3 class="text-xl lg:text-2xl font-medium text-center" style="color: #22D3EE;">
+                            🧠 Smart Compression Logic
+                        </h3>
+                        <p class="text-sm lg:text-base text-text-bright text-center">
+                            The core Python script intelligently adjusts JPEG quality to meet a 1MB target size or
+                            minimum quality threshold.
+                        </p>
                     </div>
-                    <div class="pixel-card p-6">
-                        <h3 class="text-3xl font-medium" style="color: #22D3EE;">Backend Ready</h3>
-                        <p class="mt-3 text-base text-text-bright">Designed for seamless integration with a Python
-                            backend to perform actual server-side image processing.</p>
+
+                    <!-- 3. Backend Integration -->
+                    <div class="pixel-card capability-card p-6">
+                        <h3 class="text-xl lg:text-2xl font-medium text-center" style="color: #22D3EE;">
+                            ⚙️ Backend Integration
+                        </h3>
+                        <p class="text-sm lg:text-base text-text-bright text-center">
+                            Designed for seamless integration with Python backends to perform actual server-side image
+                            processing.
+                        </p>
                     </div>
-                    <div class="pixel-card p-6"> <!-- New box for OCD -->
-                        <h3 class="text-3xl font-medium" style="color: #22D3EE;">Cross-Platform Ready</h3>
-                        <p class="mt-3 text-base text-text-bright">The core Python script is designed for broad
-                            compatibility, allowing you to compress images efficiently across various operating systems.
+
+                    <!-- 4. Cross-Platform Ready -->
+                    <div class="pixel-card capability-card p-6">
+                        <h3 class="text-xl lg:text-2xl font-medium text-center" style="color: #22D3EE;">
+                            🌐 Cross-Platform Ready
+                        </h3>
+                        <p class="text-sm lg:text-base text-text-bright text-center">
+                            Broad compatibility across various operating systems for efficient image compression
+                            anywhere.
                         </p>
                     </div>
                 </div>
@@ -579,11 +770,18 @@ if __name__ == '__main__':
             let previewImageUrl = null;
             let isProcessing = false;
 
+            // --- Mobile Detection ---
+            const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
             // --- Canvas Background Animation Logic (Stars & Terrain) ---
             const bgCtx = backgroundCanvas.getContext('2d');
             let stars = [];
             let terrain = [];
             const terrainStep = 20;
+
+            // Reduce animation complexity on mobile for better performance
+            const starCount = isMobile ? 300 : 600;
+            const animationSpeed = isMobile ? 0.5 : 1;
 
             class Star {
                 constructor() { this.reset(); }
@@ -597,7 +795,7 @@ if __name__ == '__main__':
                     this.pulseOffset = Math.random() * Math.PI * 2;
                 }
                 update() {
-                    this.x -= this.speed;
+                    this.x -= this.speed * animationSpeed;
                     if (this.x < 0) this.x = backgroundCanvas.width;
                     this.alpha = 0.5 + 0.5 * Math.sin(this.twinkleSpeed * Date.now() * 0.001 + this.pulseOffset);
                 }
@@ -639,7 +837,7 @@ if __name__ == '__main__':
                 backgroundCanvas.width = window.innerWidth;
                 backgroundCanvas.height = document.body.scrollHeight;
                 stars = [];
-                for (let i = 0; i < 600; i++) stars.push(new Star());
+                for (let i = 0; i < starCount; i++) stars.push(new Star());
                 generateTerrain();
             };
 
@@ -686,7 +884,11 @@ if __name__ == '__main__':
                 }
             };
             resizeHeader(); // Initial size setup
-            const slashInterval = setInterval(() => { if (slashes.length < 2) slashes.push(new Slash()); }, 1500);
+            // Reduce slash frequency on mobile for better performance
+            const slashInterval = setInterval(() => {
+                const maxSlashes = isMobile ? 1 : 2;
+                if (slashes.length < maxSlashes) slashes.push(new Slash());
+            }, isMobile ? 2500 : 1500);
             let headerAnimationFrameId;
             const loopHeader = () => {
                 animateSlashes();
@@ -839,6 +1041,18 @@ if __name__ == '__main__':
                         faqItem.classList.toggle('active');
                     }
                 });
+
+                // Improve touch handling on mobile
+                if (isMobile) {
+                    button.addEventListener('touchstart', (event) => {
+                        event.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+                    });
+                    button.addEventListener('touchend', (event) => {
+                        setTimeout(() => {
+                            event.currentTarget.style.backgroundColor = '';
+                        }, 150);
+                    });
+                }
             });
 
             // --- Global Event Listener for Window Resize ---
@@ -850,6 +1064,27 @@ if __name__ == '__main__':
                     resizeHeader();
                 }, 150);
             });
+
+            // --- Mobile-specific optimizations ---
+            if (isMobile) {
+                // Disable animations on orientation change for smoother transition
+                window.addEventListener('orientationchange', () => {
+                    setTimeout(() => {
+                        resizeBackground();
+                        resizeHeader();
+                    }, 500);
+                });
+
+                // Prevent zoom on double tap for buttons
+                document.querySelectorAll('button').forEach(button => {
+                    button.addEventListener('touchend', (event) => {
+                        event.preventDefault();
+                        setTimeout(() => {
+                            button.click();
+                        }, 0);
+                    });
+                });
+            }
         });
     </script>
 </body>
